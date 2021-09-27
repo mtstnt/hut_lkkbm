@@ -19,3 +19,6 @@ application/logs/*
 !application/logs/index.html
 !application/logs/.htaccess
 /vendor/
+
+application/db/backups/*
+!application/db/backups/index.html

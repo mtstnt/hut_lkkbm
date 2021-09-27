@@ -1,0 +1,1 @@
+INSERT INTO m_admins VALUES (DEFAULT, 'admin', '$2b$10$DvRQMjar/gAXFq0PeDrtRe1K/TVrAa/JwNNZzdWgNXbNxMN88fgvq');
