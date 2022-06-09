@@ -1,4 +1,4 @@
-CREATE TABLE m_admins (
+CREATE TABLE admins (
 	id 				INT PRIMARY KEY AUTO_INCREMENT,
 	username 		VARCHAR(191) UNIQUE NOT NULL,
 	password 		VARCHAR(191) NOT NULL,
@@ -13,12 +13,30 @@ CREATE TABLE m_admins (
 	deleted_by		VARCHAR(191) DEFAULT NULL
 );
 
-CREATE TABLE donation (
-	id 				INT PRIMARY KEY AUTO_INCREMENT,
-	nrp 			CHAR(9) NOT NULL,
-	name			VARCHAR(191) NOT NULL,
-	nominal 		BIGINT NOT NULL,
-	time_stamp		TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+CREATE TABLE informasi (
+	id				INT PRIMARY KEY AUTO_INCREMENT,
+	tanggal_acara	DATETIME DEFAULT NULL,
+	target_donasi	BIGINT DEFAULT 0
+);
+
+CREATE TABLE jurusan (
+	id				INT PRIMARY KEY AUTO_INCREMENT,
+	nama			VARCHAR(255) NOT NULL,
+	
+	status 			TINYINT(1) DEFAULT 1,
+	created_at 		TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	updated_at 		TIMESTAMP NULL DEFAULT NULL,
+	deleted_at 		TIMESTAMP NULL DEFAULT NULL,
+	created_by		VARCHAR(191) DEFAULT NULL,
+	updated_by		VARCHAR(191) DEFAULT NULL,
+	deleted_by		VARCHAR(191) DEFAULT NULL
+);	
+
+CREATE TABLE metode_pembayaran (
+	id				INT PRIMARY KEY AUTO_INCREMENT,
+	nama			VARCHAR(255) NOT NULL,
+
+	deskripsi		TEXT,
 
 	status 			TINYINT(1) DEFAULT 1,
 	created_at 		TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -29,7 +47,38 @@ CREATE TABLE donation (
 	deleted_by		VARCHAR(191) DEFAULT NULL
 );
 
-CREATE TABLE m_tipe_lomba (
+CREATE TABLE vendor (
+	id				INT PRIMARY KEY AUTO_INCREMENT,
+	nama			VARCHAR(191) NOT NULL,
+	logo			VARCHAR(255) DEFAULT NULL,
+	deskripsi		TEXT DEFAULT NULL,
+
+	status 			TINYINT(1) DEFAULT 1,
+	created_at 		TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	updated_at 		TIMESTAMP NULL DEFAULT NULL,
+	deleted_at 		TIMESTAMP NULL DEFAULT NULL,
+	created_by		VARCHAR(191) DEFAULT NULL,
+	updated_by		VARCHAR(191) DEFAULT NULL,
+	deleted_by		VARCHAR(191) DEFAULT NULL
+);
+
+CREATE TABLE lk (
+	id 				INT PRIMARY KEY AUTO_INCREMENT,
+	name 			VARCHAR(191),
+	total_donasi	BIGINT DEFAULT 0,
+
+	logo			VARCHAR(255) DEFAULT NULL,
+
+	status 			TINYINT(1) DEFAULT 1,
+	created_at 		TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	updated_at 		TIMESTAMP NULL DEFAULT NULL,
+	deleted_at 		TIMESTAMP NULL DEFAULT NULL,
+	created_by		VARCHAR(191) DEFAULT NULL,
+	updated_by		VARCHAR(191) DEFAULT NULL,
+	deleted_by		VARCHAR(191) DEFAULT NULL
+);
+
+CREATE TABLE tipe_user (
 	id				INT PRIMARY KEY AUTO_INCREMENT,
 	name			VARCHAR(191) NOT NULL,
 
@@ -42,11 +91,74 @@ CREATE TABLE m_tipe_lomba (
 	deleted_by		VARCHAR(191) DEFAULT NULL
 );
 
-CREATE TABLE m_peserta_lomba (
+CREATE TABLE donasi (
+	id 						INT PRIMARY KEY AUTO_INCREMENT,
+
+	nrp						CHAR(9) DEFAULT NULL,
+	nama					VARCHAR(191) NOT NULL,
+	
+	jurusan_id				INT DEFAULT NULL,
+	lk_id					INT DEFAULT NULL,
+	tipe_user_id			INT NOT NULL,
+
+	jumlah 					BIGINT NOT NULL,
+	metode_pembayaran_id	INT NOT NULL,
+	time_stamp				TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	
+	file 					VARCHAR(255) NOT NULL,
+
+	confirmed				TINYINT(1) DEFAULT 0,
+	confirmed_nominal		BIGINT DEFAULT NULL,
+
+	status 					TINYINT(1) DEFAULT 1,
+	created_at 				TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	updated_at 				TIMESTAMP NULL DEFAULT NULL,
+	deleted_at 				TIMESTAMP NULL DEFAULT NULL,
+	created_by				VARCHAR(191) DEFAULT NULL,
+	updated_by				VARCHAR(191) DEFAULT NULL,
+	deleted_by				VARCHAR(191) DEFAULT NULL,
+
+	CONSTRAINT fk_donasi_metode_pembayaran 
+		FOREIGN KEY(metode_pembayaran_id) REFERENCES metode_pembayaran(id),
+	CONSTRAINT fk_donasi_tipe_user 
+		FOREIGN KEY(tipe_user_id) REFERENCES tipe_user(id),
+	CONSTRAINT fk_donasi_jurusan 
+		FOREIGN KEY(jurusan_id) REFERENCES jurusan(id),
+	CONSTRAINT fk_donasi_lk 
+		FOREIGN KEY(lk_id) REFERENCES lk(id)
+);
+
+CREATE TABLE tipe_lomba (
+	id				INT PRIMARY KEY AUTO_INCREMENT,
+	nama			VARCHAR(191) NOT NULL,
+
+	status 			TINYINT(1) DEFAULT 1,
+	created_at 		TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	updated_at 		TIMESTAMP NULL DEFAULT NULL,
+	deleted_at 		TIMESTAMP NULL DEFAULT NULL,
+	created_by		VARCHAR(191) DEFAULT NULL,
+	updated_by		VARCHAR(191) DEFAULT NULL,
+	deleted_by		VARCHAR(191) DEFAULT NULL
+);
+
+CREATE TABLE peserta_lomba (
 	id 				INT PRIMARY KEY AUTO_INCREMENT,
 	nrp 			CHAR(9) NOT NULL,
-	name			VARCHAR(191) NOT NULL,
+
+	nama			VARCHAR(191) NOT NULL,
+	email			VARCHAR(191) NOT NULL,
+	
+	anggota			TEXT DEFAULT NULL, -- json text isinya nrp, nama semua anggota.
+
+	judul_karya 	VARCHAR(255) DEFAULT NULL,
+	deskripsi_karya	TEXT DEFAULT NULL,
+
 	tipe_lomba_id	INT NOT NULL,
+
+	link_submission	TEXT DEFAULT NULL,
+
+	contact_person	VARCHAR(191),
+	bukti_trf		VARCHAR(191),
 
 	status 			TINYINT(1) DEFAULT 1,
 	created_at 		TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -58,33 +170,6 @@ CREATE TABLE m_peserta_lomba (
 
 	CONSTRAINT fk_lomba_peserta_lomba 
 		FOREIGN KEY (tipe_lomba_id) REFERENCES tipe_lomba(id)
-);
-
-CREATE TABLE m_tipe_user (
-	id				INT PRIMARY KEY AUTO_INCREMENT,
-	name			VARCHAR(191) NOT NULL,
-
-	status 			TINYINT(1) DEFAULT 1,
-	created_at 		TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-	updated_at 		TIMESTAMP NULL DEFAULT NULL,
-	deleted_at 		TIMESTAMP NULL DEFAULT NULL,
-	created_by		VARCHAR(191) DEFAULT NULL,
-	updated_by		VARCHAR(191) DEFAULT NULL,
-	deleted_by		VARCHAR(191) DEFAULT NULL
-);
-
-CREATE TABLE m_lk (
-	id 				INT PRIMARY KEY AUTO_INCREMENT,
-	name 			VARCHAR(191),
-	total_donasi	BIGINT DEFAULT 0,
-
-	status 			TINYINT(1) DEFAULT 1,
-	created_at 		TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-	updated_at 		TIMESTAMP NULL DEFAULT NULL,
-	deleted_at 		TIMESTAMP NULL DEFAULT NULL,
-	created_by		VARCHAR(191) DEFAULT NULL,
-	updated_by		VARCHAR(191) DEFAULT NULL,
-	deleted_by		VARCHAR(191) DEFAULT NULL
 );
 
 CREATE TABLE wishlist (

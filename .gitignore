@@ -22,3 +22,8 @@ application/logs/*
 
 application/db/backups/*
 !application/db/backups/index.html
+
+assets/uploads/bukti-transfer
+assets/uploads/pengumpulan-karya
+
+*.sql

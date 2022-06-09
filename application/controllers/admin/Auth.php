@@ -15,7 +15,7 @@ class Auth extends CI_Controller
 	public function check()
 	{
 		$this->load->library('form_validation');
-		$this->load->model('admin_model');
+		$this->load->model('Admin_model');
 
 		$this->form_validation->set_rules('username', 'username', 'required');
 		$this->form_validation->set_rules('password', 'password', 'required|max_length[16]');
@@ -28,13 +28,22 @@ class Auth extends CI_Controller
 		$username = $this->input->post('username');
 		$password = $this->input->post('password');
 
-		$auth_result = $this->admin_model->authenticate($username, $password);
+		$auth_result = $this->Admin_model->authenticate($username, $password);
 		if (!$auth_result) {
 			$this->session->set_flashdata('err', 'Invalid credentials!');
 			return redirect('admin/auth');
 		}
 
-		$this->session->user = $auth_result;
+		$admin = $this->Admin_model->find($auth_result)->result()[0];
+		
+		$this->session->user = array(
+			'id' 		=> $auth_result,
+			'username' 	=> $admin->username
+		);
+
+		$this->Admin_model->update($auth_result, array(
+			'last_login' => date('Y-m-d H:i:s', time())
+		));
 
 		return redirect('admin/dashboard');
 	}

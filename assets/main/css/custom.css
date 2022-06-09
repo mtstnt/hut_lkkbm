@@ -1,0 +1,164 @@
+/* 
+	Color Variables
+*/
+
+:root {
+	--primary: var(--color5);
+	--secondary: rgba(6, 12, 34, 0.76);
+	--tertiary: #f82249;
+
+	--color1: #c7B1A4;
+	--color2: #f68d5e;
+	--color3: #bd2226;
+	--color4: #294e5e;
+	--color5: #12191f;
+}
+
+#countdown-wrap {
+	
+}
+
+::selection {
+	background: var(--tertiary);
+	color: white;
+}
+
+select option:hover {
+	background-color: var(--primary);
+	color: white;
+}
+
+.form-control:focus, .form-select:focus {
+	border: 1px solid var(--primary) !important;
+	box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.075) inset, 0px 0px 4px var(--primary);
+}
+
+/*
+	CUSTOM CLASSES
+ */
+
+.x-bg-primary {
+	background-color: var(--primary) !important;
+}
+
+.x-bg-color2 {
+	background-color: var(--color2) !important;
+}
+
+/* Wishlist */
+.bg-wishlist-hero {
+	background: var(--color2);
+}
+
+/*--------------------------------------------------------------
+# Donations Section
+--------------------------------------------------------------*/
+
+#donations {
+	padding: 60px 0 30px 0;
+}
+
+#donations .donation {
+	position: relative;
+	overflow: hidden;
+	margin-bottom: 30px;
+}
+
+body {
+	overflow-x: hidden;
+}
+
+#donations .donation .details {
+	background: var(--secondary);
+	position: absolute;
+	left: 0;
+	bottom: -40px;
+	right: 0;
+	text-align: center;
+	padding-top: 10px;
+	transition: all 300ms cubic-bezier(0.645, 0.045, 0.355, 1);
+}
+
+#donations .donation .details h3 {
+	color: #fff;
+	font-size: 22px;
+	font-weight: 600;
+	margin-bottom: 5px;
+}
+
+#donations .donation .details p {
+	color: #fff;
+	font-size: 15px;
+	margin-bottom: 10px;
+	font-style: italic;
+}
+
+#donations .donation .details .social {
+	height: 40px;
+}
+
+#donations .donation .details .social i {
+	line-height: 0;
+	margin: 0 2px;
+}
+
+#donations .donation .details a {
+	color: #fff;
+}
+
+#donations .donation .details a:hover {
+	color: #f82249;
+}
+
+#donations .donation:hover .details {
+	bottom: 0;
+}
+
+#donations-details {
+	padding: 60px 0;
+}
+
+#donations-details .details h2 {
+	color: #112363;
+	font-size: 28px;
+	font-weight: 700;
+	margin-bottom: 10px;
+}
+
+#donations-details .details .social {
+	margin-bottom: 15px;
+}
+
+#donations-details .details .social a {
+	background: #e9edfb;
+	color: #112363;
+	line-height: 1;
+	display: inline-block;
+	text-align: center;
+	border-radius: 50%;
+	width: 36px;
+	height: 36px;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+}
+
+#donations-details .details .social a:hover {
+	background: #f82249;
+	color: #fff;
+}
+
+#donations-details .details .social a i {
+	font-size: 16px;
+	line-height: 0;
+}
+
+#donations-details .details p {
+	color: #112363;
+	font-size: 15px;
+	margin-bottom: 10px;
+}
+
+.before-white::before {
+	background-color: white;
+}

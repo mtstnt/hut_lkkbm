@@ -5,13 +5,14 @@ require_once 'Model.php';
 
 class Admin_model extends Model
 {
-	protected $table = 'm_admins';
+	protected $table = 'admins';
 
 	public function authenticate($username, $password)
 	{
 		$query = $this->db->select('id, username, password')
-			->from('m_admins')
+			->from($this->table)
 			->where('username', $username)
+			->where('status', 1)
 			->get();
 
 		if ($query->num_rows() == 0) {

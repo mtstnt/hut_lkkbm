@@ -11,12 +11,20 @@ class Dashboard extends CI_Controller
 			$this->session->set_flashdata('err', 'Please log in first');
 			return redirect('admin/auth');
 		}
+		$this->load->helper('functions');
+		$this->load->model('Informasi_model');
+		$this->load->model('Donasi_model');
 	}
 
 	public function index()
 	{
-		$this->load->helper('admin');
+		$data = array();
+		$data['page'] = 'dashboard';
+		$data['informasi'] = $this->Informasi_model->get();
 
-		load_admin($this->load, 'admin/dashboard');
+		$data['total'] = $this->Donasi_model->get_total_donasi();
+		$data['total_today'] = $this->Donasi_model->get_total_today();
+
+		load_admin($this->load, 'admin/dashboard', $data);
 	}
 }
